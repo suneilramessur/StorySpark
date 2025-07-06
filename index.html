@@ -1,31 +1,368 @@
-Story Spark
-✨
-Generate creative writing prompts and craft amazing stories!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Story Spark</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
- Generate New Prompt 🎲
- GENRE
- SETTING
- TWIST
-Start Writing! 📝
-Your Story 📖
-0 words ✍️
-Your prompt:
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
 
-Start writing your story here... Let your imagination run wild! 🌟
-← Hide Writing Area
-Clear 🗑️ New Prompt 🎲
-How to Use Story Spark ✨
-🎲
-1
-Generate
-Click the button to get a random combination of genre, setting, and twist.
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
 
-💡
-2
-Inspire
-Use the three colorful elements as inspiration for your creative story.
+        h1 {
+            text-align: center;
+            color: #4a5568;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-📝
-3
-Write
-Start writing your story and let your imagination flow!
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto 30px;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .prompt-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .prompt-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .prompt-card h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prompt-card .value {
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .genre { background: linear-gradient(45deg, #ff9a9e, #fecfef); }
+        .setting { background: linear-gradient(45deg, #a18cd1, #fbc2eb); }
+        .twist { background: linear-gradient(45deg, #ffecd2, #fcb69f); }
+
+        .writing-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .writing-section h2 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .word-count {
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .current-prompt {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        #storyText {
+            width: 100%;
+            height: 300px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            resize: vertical;
+            font-family: 'Georgia', serif;
+            transition: border-color 0.3s ease;
+        }
+
+        #storyText:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-clear {
+            background: #e53e3e;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background: #c53030;
+            transform: translateY(-2px);
+        }
+
+        .btn-new {
+            background: #38a169;
+            color: white;
+        }
+
+        .btn-new:hover {
+            background: #2f855a;
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .instructions h3 {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .step {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .step-number {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .step h4 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .prompt-display {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Story Spark ✨</h1>
+        <p class="subtitle">Generate creative writing prompts and craft amazing stories!</p>
+        
+        <button class="generate-btn" onclick="generatePrompt()">Generate New Prompt 🎲</button>
+        
+        <div class="prompt-display">
+            <div class="prompt-card">
+                <h3>📚 GENRE</h3>
+                <div class="value genre" id="genreDisplay">Click to generate!</div>
+            </div>
+            <div class="prompt-card">
+                <h3>🌍 SETTING</h3>
+                <div class="value setting" id="settingDisplay">Click to generate!</div>
+            </div>
+            <div class="prompt-card">
+                <h3>⚡ TWIST</h3>
+                <div class="value twist" id="twistDisplay">Click to generate!</div>
+            </div>
+        </div>
+        
+        <div class="writing-section">
+            <h2>Your Story 📖</h2>
+            <div class="word-count" id="wordCount">0 words ✍️</div>
+            <div class="current-prompt" id="currentPrompt">Your prompt will appear here...</div>
+            <textarea id="storyText" placeholder="Start writing your story here... Let your imagination run wild! 🌟"></textarea>
+            <div class="controls">
+                <button class="btn btn-clear" onclick="clearStory()">Clear 🗑️</button>
+                <button class="btn btn-new" onclick="generatePrompt()">New Prompt 🎲</button>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>How to Use Story Spark ✨</h3>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">🎲</div>
+                    <h4>Generate</h4>
+                    <p>Click the button to get a random combination of genre, setting, and twist.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">💡</div>
+                    <h4>Inspire</h4>
+                    <p>Use the three colorful elements as inspiration for your creative story.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">📝</div>
+                    <h4>Write</h4>
+                    <p>Start writing your story and let your imagination flow!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const genres = [
+            'Fantasy Adventure', 'Sci-Fi Mystery', 'Romantic Comedy', 'Horror Thriller',
+            'Historical Fiction', 'Superhero Origin', 'Detective Story', 'Space Opera',
+            'Fairy Tale Retelling', 'Zombie Apocalypse', 'Time Travel', 'Steampunk',
+            'Cyberpunk', 'Magical Realism', 'Post-Apocalyptic', 'Coming of Age',
+            'Slice of Life', 'Dystopian Future', 'Alternate History', 'Urban Fantasy'
+        ];
+
+        const settings = [
+            'Abandoned Castle', 'Space Station', 'Underwater City', 'Flying Island',
+            'Desert Oasis', 'Frozen Wasteland', 'Magical Forest', 'Cyberpunk Tokyo',
+            'Victorian London', 'Mars Colony', 'Pirate Ship', 'Ancient Egypt',
+            'School for Wizards', 'Post-War Bunker', 'Alien Planet', 'Time Machine',
+            'Haunted Mansion', 'Secret Laboratory', 'Medieval Village', 'Robot Factory'
+        ];
+
+        const twists = [
+            'The hero is the villain', 'It was all a dream', 'Time loop', 'Everyone is a robot',
+            'The world is a simulation', 'Memory loss', 'Secret twin', 'Betrayal by best friend',
+            'The narrator is unreliable', 'Everyone can read minds', 'Magic is forbidden',
+            'The monster is misunderstood', 'Identity swap', 'The treasure is cursed',
+            'Reality is breaking down', 'The guide is lying', 'Powers have a cost',
+            'The rescue is a trap', 'The enemy becomes an ally', 'The truth is hidden'
+        ];
+
+        let currentGenre = '';
+        let currentSetting = '';
+        let currentTwist = '';
+
+        function getRandomElement(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generatePrompt() {
+            currentGenre = getRandomElement(genres);
+            currentSetting = getRandomElement(settings);
+            currentTwist = getRandomElement(twists);
+            
+            document.getElementById('genreDisplay').textContent = currentGenre;
+            document.getElementById('settingDisplay').textContent = currentSetting;
+            document.getElementById('twistDisplay').textContent = currentTwist;
+            
+            const promptText = `Genre: ${currentGenre} | Setting: ${currentSetting} | Twist: ${currentTwist}`;
+            document.getElementById('currentPrompt').textContent = promptText;
+        }
+
+        function clearStory() {
+            document.getElementById('storyText').value = '';
+            updateWordCount();
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('storyText').value;
+            const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            document.getElementById('wordCount').textContent = `${wordCount} words ✍️`;
+        }
+
+        // Add event listener for word count
+        document.getElementById('storyText').addEventListener('input', updateWordCount);
+
+        // Generate initial prompt
+        generatePrompt();
+    </script>
+</body>
+</html>
